@@ -1,0 +1,1024 @@
+<div class="container-fluid">
+  <div class="row">
+    <nav class="navbar navbar-expand-sm navbar-dark crud">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <img
+          width="250"
+          src="https://colibriapp.com.co/wp-content/uploads/2022/08/cropped-abra-kadabra.png"
+          alt=""
+        />
+        <h1>Disfraces Octubre {{ myDate.getFullYear() }}</h1>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarID"
+          aria-controls="navbarID"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-flex">
+          <div class="collapse navbar-collapse" id="navbarID">
+            <div class="navbar-nav">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#registro"
+                >Registro
+              </a>
+
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#info"
+                >Tareas</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div class="row">
+    <div class="column">
+      <div class="col-8 mt-4">
+        <div class="col-sm-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar por nombre de disfraz"
+              (keyup)="filterCostumes($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-8 mt-4">
+        <div class="col-sm-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar por tipo de prenda"
+              (keyup)="filterType($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-8 mt-4">
+        <div class="col-sm-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar por ALQUILER o VENTA"
+              (keyup)="filterCategory($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-8 mt-4">
+        <div class="col-sm-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar tarea"
+              (keyup)="filterTaskDeliveryDate($event)"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="list">
+        <div class="row mt-4">
+          <h3 *ngIf="costumes.length === 0">No hay trajes para mostrar</h3>
+          <div class="leans-list" *ngFor="let costume of costumes; index as i">
+            <div
+              class="section_0"
+              [ngStyle]="{
+                'background-color':
+                  costume.progress == 0 ? 'rgb(199 0 41)' : 'rgb(2 199 73)'
+              }"
+            ></div>
+            <div class="section_1">
+              <span class="name">{{ costume.costumeName.toLowerCase() }}</span>
+              <span class="date">Entregar: {{ costume.deliveryDate }}</span>
+            </div>
+            <div class="section_2">
+              <span>Factura: {{ costume.factNum }}</span>
+              <div>
+                <span>Total: </span>
+                <span class="saldo">${{ costume.cant * costume.price }} </span>
+              </div>
+              <div>
+                <span>Saldo: </span>
+                <span class="saldo"
+                  >${{ costume.cant * costume.price - costume.payment }}
+                </span>
+              </div>
+              <div>
+                <span>Abonos: ${{ costume.payment }}</span>
+              </div>
+              <div class="container"></div>
+              <div class="section-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="row">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+          <div class="col 1 row mt-4 p-8">
+            <table class="table table-bordered table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>Disfraz</th>
+                  <th class="text-center">Detalle</th>
+                  <th class="text-center">Imagen</th>
+                  <th class="text-center" style="display:true">Editar</th>
+                  <th class="text-center" style="display:true">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let costume of costumes; index as i">
+                  <td>
+                    <h4>{{ costume.costumeName.toLowerCase() }}</h4>
+                  </td>
+                  <td>
+                    <button
+                      (click)="loadInfo(i)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#details"
+                      class="info-btn"
+                    >
+                      <i class="fa-solid fa-search"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      (click)="loadInfo(i)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#image_detail"
+                      class="info-btn"
+                    >
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      style="display:true"
+                      (click)="loadInfo(i)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#edit"
+                      class="btn editar"
+                    >
+                      <i class="fa-solid fa-pencil"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="btn eliminar"
+                      (click)="eliminar(i)"
+                      style="display:true"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="pizarra">
+        <div *ngFor="let state of states; index as stateIndex" class="colState">
+          <p>{{ state }}</p>
+
+          <div *ngFor="let task of tasks; index as taskIndex">
+            <div *ngIf="task.state == stateIndex" class="taskCard">
+              <div class="btns">
+                <button (click)="deleteTask(taskIndex)">X</button>
+                <button (click)="nextState(taskIndex)">>></button>
+                <button (click)="prevState(taskIndex)"><<</button>
+              </div>
+              <p>Fecha de entrega: {{ task.deliveryDate }}</p>
+              <p>{{ task.costumeName }}</p>
+              <p>{{ task.description }}</p>
+
+              <div class="tagsDiv">
+                <div class="tag">
+                  <h1>{{ task.factNum }}</h1>
+                </div>
+
+                <div class="tag" [style.background]="task.priority.color">
+                  <h2>{{ task.priority.description }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- MODAL DETAILS -->
+    <div
+      class="modal fade"
+      id="details"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Visto: {{ myDate | date: 'dd-MM-yyyy' }}
+            </h5>
+
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6">
+                <strong>Id</strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.id }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Factura: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.factNum }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Fecha de Entrega: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.deliveryDate }}
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Medidas: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.size }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Precio: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.price }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Total: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.price * editCostume.cant }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Abono: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.payment }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Debe: </strong>
+              </div>
+              <div class="col-6"></div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Celular: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.phone }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <strong>Detalle: </strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.description }}
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL oimage -->
+    <div
+      class="modal fade"
+      id="image_detail"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Visto: {{ myDate | date: 'dd-MM-yyyy' }}
+            </h5>
+
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6">
+                <strong>Imagen</strong>
+              </div>
+              <div class="col-6">
+                {{ editCostume.image }}
+              </div>
+              <p>
+                <img width="250" [src]="editCostume.image" alt="" />
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--MODAL INFO-->
+    <div
+      class="modal fade"
+      id="info"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Tareas:</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row"></div>
+            <h2>Crear tarea</h2>
+            <div class="nuevaTarea">
+              <div class="tareaFormCampo">
+                <label for="factura">Factura:</label>
+                <input
+                  id="factura"
+                  type="number"
+                  [(ngModel)]="newTask.factNum"
+                />
+              </div>
+              <div class="tareaFormCampo">
+                <label for="entregar">Entregar:</label>
+                <input
+                  id="entregar"
+                  type="date"
+                  [(ngModel)]="newTask.deliveryDate"
+                />
+              </div>
+              <div class="tareaFormCampo">
+                <label for="costumeName">Traje:</label>
+                <input
+                  id="costumeName"
+                  type="text"
+                  [(ngModel)]="newTask.costumeName"
+                />
+              </div>
+              <div class="tareaFormCampo">
+                <label for="desc">Descripción</label>
+                <input
+                  id="desc"
+                  type="text"
+                  [(ngModel)]="newTask.description"
+                />
+              </div>
+
+              <div class="tareaFormCampo">
+                <label for="state">Estado</label>
+                <select
+                  id="state"
+                  name="statesSelect"
+                  [(ngModel)]="newTask.state"
+                >
+                  <option
+                    *ngFor="let state of states; index as i"
+                    [ngValue]="i"
+                  >
+                    {{ state }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="tareaFormCampo">
+                <label for="category">Categoria</label>
+                <select
+                  id="category"
+                  name="categorySelect"
+                  [(ngModel)]="newTask.category"
+                >
+                  <option
+                    *ngFor="let category of categories"
+                    [ngValue]="category"
+                  >
+                    {{ category }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="tareaFormCampo">
+                <label for="priority">Prioridad</label>
+                <select
+                  id="priority"
+                  name="prioritySelect"
+                  [(ngModel)]="newTask.priority"
+                >
+                  <option
+                    *ngFor="let priority of priorities"
+                    [ngValue]="priority"
+                  >
+                    {{ priority.description }}
+                  </option>
+                </select>
+              </div>
+
+              <button (click)="addTask()">Agregar</button>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL AÑADIR -->
+
+    <div
+      class="modal fade"
+      id="registro"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Formulario de registro
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="d-flex justify-content-center">
+                <form>
+                  <div class="mb-3">
+                    <label for="factura">Fecha: </label>
+                    <input class="form-control" type="date" name="fecha" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="factura">Factura: </label>
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="factura"
+                      [(ngModel)]="newCostume.factNum"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="name">Primer Nombre: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="name"
+                      [(ngModel)]="newCostume.name"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Segundo Nombre: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="middlename"
+                      [(ngModel)]="newCostume.middlename"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Primer apellido: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="surname"
+                      [(ngModel)]="newCostume.surname"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Segundo apellido: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="lastsurname"
+                      [(ngModel)]="newCostume.lastsurname"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="form-control">Categoria: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="categoria"
+                      [(ngModel)]="newCostume.category"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="form-control">Tipo: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="tipo"
+                      [(ngModel)]="newCostume.type"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="form-control">Disfraz: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="disfraz"
+                      [(ngModel)]="newCostume.costumeName"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="form-control">Genero: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="tipo"
+                      [(ngModel)]="newCostume.gender"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="cantidad">Cantidad: </label>
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="cantidad"
+                      [(ngModel)]="newCostume.cant"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="precio">Precio: </label>
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="precio"
+                      [(ngModel)]="newCostume.price"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="payment">Abono: </label>
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="payment"
+                      [(ngModel)]="newCostume.payment"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="">Deposito: </label>
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="deposito"
+                      [(ngModel)]="newCostume.rentValue"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Fecha de devolución: </label>
+                    <input
+                      class="form-control"
+                      type="date"
+                      name="fecha_retorno"
+                      [(ngModel)]="newCostume.returnDate"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Fecha de entrega: </label>
+                    <input
+                      class="form-control"
+                      type="date"
+                      name="fecha_entrega"
+                      [(ngModel)]="newCostume.deliveryDate"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Medidas: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="medidas"
+                      [(ngModel)]="newCostume.size"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Celular: </label>
+                    <input
+                      class="form-control"
+                      type="number"
+                      name="phone"
+                      [(ngModel)]="newCostume.phone"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Estado: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="estado"
+                      [(ngModel)]="newCostume.status"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Imagen: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="image"
+                      [(ngModel)]="newCostume.image"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Tipo de pago: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="paymentType"
+                      [(ngModel)]="newCostume.paymentType"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="">Descripción: </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      name="description"
+                      [(ngModel)]="newCostume.description"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="addCostume()"
+              data-bs-dismiss="modal"
+            >
+              Guardar cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- MODAL EDIT -->
+  <div
+    class="modal fade"
+    id="edit"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="d-flex justify-content-center">
+              <form>
+                <div class="mb-3">
+                  <label for="fecha">Fecha: </label>
+                  <input class="form-control" type="date" name="fecha" />
+                </div>
+                <div class="mb-3">
+                  <label for="factura">Factura: </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="factura"
+                    [(ngModel)]="editCostume.factNum"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="name">Primer Nombre: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="name"
+                    [(ngModel)]="editCostume.name"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="middlename">Segundo Nombre: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="middlename"
+                    [(ngModel)]="editCostume.middlename"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="surname">Primer apellido: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="surname"
+                    [(ngModel)]="editCostume.surname"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="lastsurname">Segundo apellido: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="lastsurname"
+                    [(ngModel)]="editCostume.lastsurname"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="categoria">Categoria: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="categoria"
+                    [(ngModel)]="editCostume.category"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="tipo">Tipo: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="tipo"
+                    [(ngModel)]="editCostume.type"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="disfraz">Disfraz: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="disfraz"
+                    [(ngModel)]="editCostume.costumeName"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="gender">Genero: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="gender"
+                    [(ngModel)]="editCostume.gender"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="cantidad">Cantidad: </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="cantidad"
+                    [(ngModel)]="editCostume.cant"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="precio">Precio: </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="precio"
+                    [(ngModel)]="editCostume.price"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="payment">Abono: </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="payment"
+                    [(ngModel)]="editCostume.payment"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="rentvalue">Deposito: </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="rentValue"
+                    [(ngModel)]="editCostume.rentValue"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="fecha_retorno">Fecha de devolución: </label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    name="fecha_retorno"
+                    [(ngModel)]="editCostume.returnDate"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="fecha_entrega">Fecha de entrega: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="fecha_entrega"
+                    [(ngModel)]="editCostume.deliveryDate"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="medidas">Medidas: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="medidas"
+                    [(ngModel)]="editCostume.size"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="phone">Celular: </label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    name="phone"
+                    [(ngModel)]="editCostume.phone"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="estado">Estado: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="estado"
+                    [(ngModel)]="editCostume.status"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="image">Imagen: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="image"
+                    [(ngModel)]="editCostume.image"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="paymentType">Tipo de pago: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="paymentType"
+                    [(ngModel)]="editCostume.paymentType"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="description">Descripción: </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="description"
+                    [(ngModel)]="editCostume.description"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

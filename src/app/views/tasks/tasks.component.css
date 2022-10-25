@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300&family=Roboto+Slab&display=swap');
+html {
+  min-height: 100%;
+}
+
+.appPizarra {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(48deg, #e8fcff, #87e1ff);
+  min-height: 100vh; /*para que la altura minima sea toda la pantalla.*/
+  margin: 0;
+  align-items: center;
+  font-family: 'Roboto Slab', serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Libre Franklin', sans-serif;
+}
+
+.titulo {
+  color: #ffffff;
+  font-size: 5em;
+  margin: 0;
+}
+
+.tareaFormCampo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 20em;
+  padding: 1em;
+  font-family: 'Roboto Slab', serif;
+}
+
+.tareaFormCampo input {
+  border: 0;
+  border-bottom: 2px solid;
+  background-color: transparent;
+  font-family: inherit;
+
+  letter-spacing: 0.05em;
+  line-height: 1; /*el texto se separa del margen inferior del input*/
+  vertical-align: 0.25em; /* alínea verticalmente el input, no solo el texto */
+  color: inherit;
+}
+
+.tareaFormCampo select {
+  font-family: inherit;
+  color: inherit;
+
+  letter-spacing: 0.05em;
+  line-height: 1.5; /* no afecta en nada */
+  vertical-align: 0.25em;
+  text-transform: uppercase;
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid;
+  padding-right: 1em; /* para extender el largo del select */
+}
+
+.pizarra {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  border-radius: 1em;
+  margin: 1.5em;
+  width: 80vw;
+  min-height: 90vh;
+  background: linear-gradient(97deg, #ffffff, #eeeeee);
+}
+
+.colState {
+  width: 20vw;
+}
+
+.taskCard {
+  padding: 0.3em 1em;
+  display: flex;
+  align-items: center;
+  max-width: 20em;
+  flex-direction: column;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  margin: 1.5em;
+  background-color: rgb(215, 253, 251);
+}
+
+.tagsDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background-color: rgb(243, 203, 214);
+  border-radius: 1em;
+  padding: 0 1em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.137);
+  font-size: smaller;
+  margin: 0.5em;
+  margin-top: 0;
+  height: 1.4em;
+  display: flex;
+  align-items: center;
+}
+
+.btns {
+  display: inline-block;
+}

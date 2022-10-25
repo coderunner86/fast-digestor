@@ -1,0 +1,75 @@
+<div class="appPizarra">
+<p class="titulo">Pizarrita Kanban</p>
+
+<h2>Crear tarea</h2>
+<div class="nuevaTarea">
+  <div class="tareaFormCampo">
+    <label for="desc">Descripción</label>
+    <input id="desc" type="text" [(ngModel)]="newTask.description" />
+  </div>
+
+  <div class="tareaFormCampo">
+    <label for="state">Estado</label>
+    <select id="state" name="statesSelect" [(ngModel)]="newTask.state">
+      <option *ngFor="let state of states; index as i" [ngValue]="i">
+        {{ state }}
+      </option>
+    </select>
+  </div>
+
+  <div class="tareaFormCampo">
+    <label for="category">Categoria</label>
+    <select
+      id="category"
+      name="categorySelect"
+      [(ngModel)]="newTask.category"
+    >
+      <option *ngFor="let category of categories" [ngValue]="category">
+        {{ category }}
+      </option>
+    </select>
+  </div>
+
+  <div class="tareaFormCampo">
+    <label for="priority">Prioridad</label>
+    <select
+      id="priority"
+      name="prioritySelect"
+      [(ngModel)]="newTask.priority"
+    >
+      <option *ngFor="let priority of priorities" [ngValue]="priority">
+        {{ priority.description }}
+      </option>
+    </select>
+  </div>
+
+  <button (click)="addTask()">Agregar</button>
+</div>
+
+<div class="pizarra">
+  <div *ngFor="let state of states; index as stateIndex" class="colState">
+    <h3>{{ state }}</h3>
+
+    <div *ngFor="let task of tasks; index as taskIndex">
+      <div *ngIf="task.state == stateIndex" class="taskCard">
+        <div class="btns">
+          <button (click)="deleteTask(taskIndex)">X</button>
+          <button (click)="nextState(taskIndex)">>></button>
+          <button (click)="prevState(taskIndex)"><<</button>
+        </div>
+        <p>{{ task.description }}</p>
+
+        <div class="tagsDiv">
+          <div class="tag">
+            <p>{{ task.category }}</p>
+          </div>
+
+          <div class="tag" [style.background]="task.priority.color">
+            <p>{{ task.priority.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
